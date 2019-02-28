@@ -1,0 +1,54 @@
+body{
+    min-width: 840px;
+}
+img{ 
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 40px;
+}
+
+.chat_ib h5{ 
+    font-size: 16px; 
+    font-weight: bold;
+    color: #778299;
+    margin:0 0 8px 0;
+}
+
+.chat_ib h5 span { 
+    font-size:14px; 
+    font-weight: bold;
+    float:right;
+}
+.chat_ib p{ 
+    font-size:14px; 
+    color: #778299;
+    margin:auto;
+}
+
+.chat_img {
+  float: left;
+  width: 10%;
+  min-width: 60px;
+}
+
+.chat_ib {
+  float: left;
+  padding: 0 0 0 15px;
+  padding-left: 20px;
+  width: 84%;
+}
+
+.chat_people { 
+    overflow:hidden; 
+    clear:both;
+}
+.chat_list {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 18px 16px 10px;
+  height: 100px;
+}
+
+.active_chat{ 
+    background: mintcream;
+}
