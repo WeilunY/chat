@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from '../contact';
 import { HistoryService } from '../history.service';
+
 
 @Component({
   selector: 'app-contact',
@@ -9,24 +9,22 @@ import { HistoryService } from '../history.service';
 })
 export class ContactComponent implements OnInit {
    
-  selectedContact: Contact;
-  contacts: Contact[];
+  user_rooms;
+  user_id = "5b92fae0dc9a9449b436d403";
 
   constructor(private historyService: HistoryService) { }
 
-  getContact(): void {
-    this.historyService.getContacts()
-      .subscribe(contacts => this.contacts = contacts);
+
+  getUserRooms(user_id: String): void {
+    this.historyService.getUserRooms(user_id)
+      .subscribe((result:any) => {
+        console.log(result)
+        this.user_rooms = result.data;
+      });
+  
   }
 
   ngOnInit() {
-    this.getContact();
+    this.getUserRooms(this.user_id);
   }
-
-  select(contact: Contact){
-    this.selectedContact = contact;
-    console.log(this.selectedContact.id);
-  }
-
-
 }

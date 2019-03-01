@@ -1,7 +1,7 @@
 export class Message{
-    RoomID: String; // the room the message in
-    Context: any; // The content of the message, can be any type: String, Picture file...
-    From: String; // UserID of the Sender
-    MessageID: String;
-    Timestamp: Number; // The time it is sent
+    room_id: String; // the room the message in
+    context: any; // The content of the message, can be any type: String, Picture file...
+    from: String; // UserID of the Sender
+    message_id: String;
+    timestamp: Number; // The time it is sent
 } 
