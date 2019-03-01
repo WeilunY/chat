@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
@@ -16,6 +16,7 @@ export class HistoryService {
   
   private user_rooms_api_url = "http://localhost:3000/api/user_rooms/user/";
   private rooms_api_url = "http://localhost:3000/api/rooms/ids/?";
+  private messages_api_url = "http://localhost:3000/api/messages/";
   
 
   // User user_id to get the rooms related
@@ -29,7 +30,7 @@ export class HistoryService {
     var url: string = '';
 
     for(var i = 0; i < length; i++){
-      
+
       if(i + 1 == length){
         url += "ids[]="+room_ids[i];
       } else {
@@ -43,8 +44,8 @@ export class HistoryService {
   }
 
   // Use room_id to get list of chat history
-  getMessages(room_ids: String){
-    return 
+  getMessages(room_id: String){
+    return this.http.get(this.messages_api_url + room_id);
   }
 
 }

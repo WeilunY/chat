@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
+
 export class ContactComponent implements OnInit {
    
-  user_rooms;
-  rooms;
+  user_rooms: any;
+  rooms: any;
   user_id = "5b92fae0dc9a9449b436d403";
 
   constructor(private historyService: HistoryService,
@@ -69,5 +70,8 @@ export class ContactComponent implements OnInit {
           }
       }
       });
+
     }
+
+    
 }
