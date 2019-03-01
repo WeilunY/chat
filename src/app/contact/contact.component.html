@@ -1,6 +1,6 @@
 
-  <div *ngFor = "let user_room of user_rooms" 
-  routerLink = "chat"
+  <div *ngFor = "let user_room of user_rooms; let i = index" 
+  (click) = "toChat(i)"
   >
     <div class="chat_list" >
       <div class="chat_people">

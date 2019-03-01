@@ -1,10 +1,10 @@
 <div class="topbar">
   <div class="back">
-    <a routerLink = "/"><</a>
+    <button (click)="back()" class="btn">< Back</button> 
   </div>
   <div class="userinfo">
     <img src="../../assets/avatar.png" alt="sunil">
-    <h3> Name </h3>
+    <h3>{{room_id}}</h3>
   </div>
 </div>
 <div class="mesgs">
