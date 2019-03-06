@@ -17,7 +17,7 @@ export class HistoryService {
   private user_rooms_api_url = "http://localhost:3000/api/user_rooms/user/";
   private rooms_api_url = "http://localhost:3000/api/rooms/ids/?";
   private messages_api_url = "http://localhost:3000/api/messages/";
-  
+  private users_api_url = "http://localhost:3000/api/users/ids/?";
 
   // User user_id to get the rooms related
   getUserRooms(user_id: String){
@@ -39,7 +39,6 @@ export class HistoryService {
       
     }
 
-    console.log(url);
     return this.http.get(this.rooms_api_url + url);
   }
 
@@ -48,4 +47,20 @@ export class HistoryService {
     return this.http.get(this.messages_api_url + room_id);
   }
 
+  // get users by user_ids
+  getUsers(user_ids: Array<String>){
+    length = user_ids.length;
+    var url: string = '';
+
+    for(var i = 0; i < length; i++){
+
+      if(i + 1 == length){
+        url += "ids[]="+user_ids[i];
+      } else {
+        url += "ids[]="+user_ids[i]+"&";
+      } 
+    }
+    console.log(this.users_api_url +url);
+    return this.http.get(this.users_api_url +url);
+  }
 }

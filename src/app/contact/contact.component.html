@@ -6,7 +6,7 @@
       <div class="chat_people">
         <div class="chat_img"> <img src='{{user_room.thumbnail}}' alt="sunil"> </div>
         <div class="chat_ib">
-          <h5>{{user_room.title}}<span class="chat_date">{{user_room.timestamp}}</span></h5>
+          <h5>{{user_room.title}}<span class="chat_date">{{user_room.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span></h5>
           <p>{{user_room.message}}</p>
         </div>
       </div>

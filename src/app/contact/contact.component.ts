@@ -25,7 +25,6 @@ export class ContactComponent implements OnInit {
     return new Promise(resolve => {
     this.historyService.getUserRooms(user_id)
       .subscribe((result:any) => {
-        console.log(result)
         this.user_rooms = result.data;
       resolve(this.user_rooms);
       });
@@ -37,22 +36,24 @@ export class ContactComponent implements OnInit {
   getRooms(room_ids: Array<String>): void{
     this.historyService.getRooms(room_ids)
       .subscribe((result:any) => {
-        console.log(result);
         this.rooms = result.data;
       });
-
-    
   }
 
   // Go to specific chat
   toChat(i: number){
-    this.router.navigate(['/chat'],{state: {room: this.user_rooms[i]['room_id'], user: this.user_id }});
-    console.log('Navigate to' + this.user_rooms[i]['room_id']);
+  this.router.navigate(['/chat'],{state: { user_room: this.user_rooms[i] } });
+
+    console.log('Navigate to ' + this.user_rooms[i]['room_id']);
   }
 
   ngOnInit() {
-    this.getUserRooms(this.user_id).then(user_rooms =>{
-      console.log(user_rooms);
+    this.getUserRooms(this.user_id).then((user_rooms:[]) =>{
+      
+      // sort the most recent
+      user_rooms = user_rooms.sort((obj1, obj2)  =>{
+        return obj1['timestamp'] < obj2['timestamp']? 1:-1;
+      });
       
       // Get rooms
       if (this.user_rooms === undefined || this.user_rooms.length == 0) {
@@ -61,7 +62,6 @@ export class ContactComponent implements OnInit {
           var room_ids: string[] = new Array();
 
           for(let user_room of this.user_rooms ){
-            console.log(user_room['room_id']);
             room_ids.push(user_room['room_id']);
           }
           
