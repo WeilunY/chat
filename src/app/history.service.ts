@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Message } from './message';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
@@ -63,4 +64,9 @@ export class HistoryService {
     console.log(this.users_api_url +url);
     return this.http.get(this.users_api_url +url);
   }
+
+  // post a message 
+  addHero (hero: Message) {
+    return this.http.post<Message>(this.messages_api_url, hero)
+   }
 }

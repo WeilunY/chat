@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../history.service';
 import { Router } from '@angular/router';
+import { Message } from '../message';
+
 
 @Component({
   selector: 'app-chat',
@@ -10,9 +12,6 @@ import { Router } from '@angular/router';
 
 export class ChatComponent implements OnInit {
 
-  room_id: string;
-  user_id: string;
-  thumbnail: string;
   user_room: any;
 
   messages: any;
@@ -20,7 +19,6 @@ export class ChatComponent implements OnInit {
 
   constructor(private router: Router,
      private historyService: HistoryService) {
-      this.user_id = this.router.getCurrentNavigation().extras.state.user;
       this.user_room = this.router.getCurrentNavigation().extras.state.user_room;
      }
 
@@ -52,9 +50,25 @@ export class ChatComponent implements OnInit {
     }
   }
 
- 
-  postChat(){
+  // post message
+  message: string;
+  postMessage(){
     
+    if(this.message){
+      console.log(this.message);
+      let sendMessage: Message = {
+        room_id : this.user_room.room_id,
+        context: this.message,
+        from: this.user_room.user_id,
+        message_id: null,
+        timestamp: Math.round(new Date().getTime()/1000) 
+      };
+      console.log(sendMessage);
+      this.messages.push(sendMessage);
+    } else {
+      alert("Need message");
+    }
+    this.message = '';
   }
 
 

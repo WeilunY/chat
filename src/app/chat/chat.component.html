@@ -16,8 +16,8 @@
       <div [ngClass]="'outgoing_msg'">
           <div [ngClass]="'outgoing_msg_img'"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
         <div [ngClass]="'sent_msg'">
-          <p>{{message.context.text}}</p>
-          <span class="time_date"> 11:01 AM    |    Today</span> </div>
+          <p>{{message.context}}</p>
+          <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span> </div>
       </div>
     </div>
 
@@ -26,8 +26,8 @@
         <div class="incoming_msg_img"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
         <div class="received_msg">
           <div class="received_withd_msg">
-            <p>{{message.context.text}}</p>
-            <span class="time_date"> 11:01 AM    |    Today</span></div>
+            <p>{{message.context}}</p>
+            <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span></div>
         </div>
       </div>
     </ng-template>
@@ -38,8 +38,8 @@
 <div class="type_msg">
   <div class="input_msg_write">
     <button class="msg_add" type="button">add</button>
-    <input type="text" class="write_msg" placeholder="Type a message" />
-    <button class="msg_send_btn" type="button">Send</button>
+    <input [(ngModel)]="message" (keydown.enter)="postMessage()" type="text" class="write_msg" placeholder="Type a message" required>
+    <button class="msg_send_btn" type="button" (click)="postMessage()" >Send</button>
   </div>
 </div>
 
