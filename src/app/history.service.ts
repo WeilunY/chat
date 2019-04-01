@@ -66,7 +66,8 @@ export class HistoryService {
   }
 
   // post a message 
-  addHero (hero: Message) {
-    return this.http.post<Message>(this.messages_api_url, hero)
+  addMessage (message: Message) {
+    console.log(message);
+    return this.http.post(this.messages_api_url + "message/", message);
    }
 }

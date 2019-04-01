@@ -64,6 +64,8 @@ export class ChatComponent implements OnInit {
         timestamp: Math.round(new Date().getTime()/1000) 
       };
       console.log(sendMessage);
+
+      this.historyService.addMessage(sendMessage);
       this.messages.push(sendMessage);
     } else {
       alert("Need message");
@@ -82,6 +84,8 @@ export class ChatComponent implements OnInit {
       // get users 
       if (this.messages != null){
         var user_ids: string[] = new Array();
+
+        user_ids.push(this.user_room['user_id']);
 
         for( let message of this.messages ){
           user_ids.push(message['from']);
