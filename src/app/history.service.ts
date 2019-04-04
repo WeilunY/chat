@@ -68,6 +68,8 @@ export class HistoryService {
   // post a message 
   addMessage (message: Message) {
     console.log(message);
-    return this.http.post(this.messages_api_url + "message/", message);
+    return this.http.post(this.messages_api_url + "message/", message).toPromise().then((result: any) => {
+      console.log('Result: ', result)
+    });
    }
 }
