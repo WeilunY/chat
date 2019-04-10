@@ -42,7 +42,7 @@ export class ContactComponent implements OnInit {
 
   // Go to specific chat
   toChat(i: number){
-  this.router.navigate(['/chat'],{state: { user_room: this.user_rooms[i] } });
+  this.router.navigate(['/chat/' + this.user_id + '/' + this.user_rooms[i].room_id],{state: { user_room: this.user_rooms[i] } });
 
     console.log('Navigate to ' + this.user_rooms[i]['room_id']);
   }
