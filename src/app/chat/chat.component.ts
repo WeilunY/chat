@@ -4,6 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Message } from '../message';
 import { UserRooms } from '../userRooms';
 
+//io
+import { Event } from '../event';
+import { SocketService } from '../socket.service';
+
+
 
 @Component({
   selector: 'app-chat',
@@ -21,17 +26,22 @@ export class ChatComponent implements OnInit {
   messages: any;
   users: any;
 
+  ioConnection: any;
 
   // update on latest message
   latest_message: String;
   last_message: String; 
 
+  container = document.getElementById("msg_container");
+
   constructor(private router: Router,
      private historyService: HistoryService, 
-     private route: ActivatedRoute) {
+     private route: ActivatedRoute, 
+     private socketService: SocketService) {
      }
 
-  // TODO
+
+
   // get one user room
   getOneUserRoom(user_id: String, room_id: String){
     return new Promise(resolve =>{
@@ -87,12 +97,17 @@ export class ChatComponent implements OnInit {
       //console.log(sendMessage);
 
       this.historyService.addMessage(sendMessage);
-      this.messages.push(sendMessage);
+
+      // io
+      this.socketService.send(sendMessage);
+
+      //this.messages.push(sendMessage);
     } else {
       alert("Need message");
     }
     this.latest_message = this.message;
     this.message = '';
+
   }
 
   // back and update user room
@@ -112,18 +127,43 @@ export class ChatComponent implements OnInit {
       this.historyService.updateUserRoom(new_user_room);
     }
     
-    this.router.navigate(['']);
+    this.router.navigate(['contact/' + this.user_id]);
   }
 
+  // socket io
+  private initIoConnection(): void {
+    this.socketService.initSocket();
+
+    this.ioConnection = this.socketService.onMessage()
+      .subscribe((message: Message) => {
+        this.messages.push(message);
+      });
+
+    this.socketService.onEvent(Event.CONNECT)
+      .subscribe(() => {
+        console.log('connected');
+      });
+      
+    this.socketService.onEvent(Event.DISCONNECT)
+      .subscribe(() => {
+        console.log('disconnected');
+      });
+  }
+
+  
 
   ngOnInit() {
+
+    // init io
+    this.initIoConnection();
+
     this.route.paramMap.subscribe(params => {
       this.user_id = params.get("user_id");
       this.room_id = params.get("room_id");
       console.log(this.user_id + ' 11111 ' + this.room_id);
     });
 
-    // TODO
+  
     // getUserRoom with user and room id
     this.getOneUserRoom(this.user_id, this.room_id).then((user_room: any) => {
       console.log(user_room);
@@ -160,8 +200,7 @@ export class ChatComponent implements OnInit {
       });
     })
 
-    // getMessages:
-  
+ 
 
   }
 

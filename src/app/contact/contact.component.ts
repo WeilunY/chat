@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../history.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 
@@ -17,7 +17,8 @@ export class ContactComponent implements OnInit {
   user_id = "5b92fae0dc9a9449b436d403";
 
   constructor(private historyService: HistoryService,
-    private router: Router) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   
   // get user rooms objects
@@ -42,12 +43,18 @@ export class ContactComponent implements OnInit {
 
   // Go to specific chat
   toChat(i: number){
-  this.router.navigate(['/chat/' + this.user_id + '/' + this.user_rooms[i].room_id],{state: { user_room: this.user_rooms[i] } });
+  this.router.navigate(['chat/' + this.user_id + '/' + this.user_rooms[i].room_id],{state: { user_room: this.user_rooms[i] } });
 
     console.log('Navigate to ' + this.user_rooms[i]['room_id']);
   }
 
   ngOnInit() {
+
+    this.route.paramMap.subscribe(params => {
+      this.user_id = params.get("user_id");
+      console.log(this.user_id);
+    });
+
     this.getUserRooms(this.user_id).then((user_rooms:[]) =>{
       
       // sort the most recent

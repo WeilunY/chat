@@ -8,30 +8,32 @@
   </div>
 </div>
 
-<div class="mesgs" 
-  *ngFor = "let message of messages">
-  <div class="msg_history">
+<div class="msg_container">
+  <div class="mesgs" 
+    *ngFor = "let message of messages">
+    
 
-    <div *ngIf = "message.from == user_room.user_id; else incoming">
-      <div [ngClass]="'outgoing_msg'">
-          <div [ngClass]="'outgoing_msg_img'"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
-        <div [ngClass]="'sent_msg'">
-          <p>{{message.context}}</p>
-          <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span> </div>
-      </div>
-    </div>
-
-    <ng-template #incoming>
-      <div class="incoming_msg">
-        <div class="incoming_msg_img"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
-        <div class="received_msg">
-          <div class="received_withd_msg">
+      <div *ngIf = "message.from == user_room.user_id; else incoming">
+        <div [ngClass]="'outgoing_msg'">
+            <div [ngClass]="'outgoing_msg_img'"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
+          <div [ngClass]="'sent_msg'">
             <p>{{message.context}}</p>
-            <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span></div>
+            <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span> </div>
         </div>
       </div>
-    </ng-template>
 
+      <ng-template #incoming>
+        <div class="incoming_msg">
+          <div class="incoming_msg_img"> <img [src]="getThumbnail(message.from)" alt="../../assets/avatar.png"> </div>
+          <div class="received_msg">
+            <div class="received_withd_msg">
+              <p>{{message.context}}</p>
+              <span class="time_date"> {{message.timestamp * 1000 | date: 'yyyy-MM-dd'}}</span></div>
+          </div>
+        </div>
+      </ng-template>
+
+    
   </div>
 </div>
 

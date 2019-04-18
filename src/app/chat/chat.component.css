@@ -67,7 +67,7 @@
 .mesgs {
   padding-top: 20px;
   top: 80px;
-  bottom: 60px;
+ 
   float: left;
   width: 100%;    
   position: relative;
@@ -82,10 +82,6 @@
   width: 100%;
 }
 
-.outgoing_msg{ 
-  overflow:hidden;
-  margin:26px 0 26px;
-}
 
 .sent_msg {
   float: right;
@@ -142,10 +138,13 @@
   max-width: 40px;
   min-width: 40px;
 }
+ 
+
+.msg_container {
+  position: relative;
   
-.msg_history {
-  height: 90%;
-  overflow-y: auto;
+  margin-top: 100px;
+  bottom: 100px;
 }
 
 img{ 
