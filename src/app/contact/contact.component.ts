@@ -1,7 +1,16 @@
+/**
+ * @author Weilun Yao
+ * 
+ * Description: 
+ * This is the contacts component for the chatting app
+ * 
+ * NOTE: Use localhost:4200/contact/:user_id to start the app
+ *       localhost:4200 itself will only return an empty page
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../history.service';
 import { Router, ActivatedRoute } from '@angular/router';
-
 
 
 @Component({
@@ -11,9 +20,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class ContactComponent implements OnInit {
-   
+  
+  // user_rooms object to populate the contact page
   user_rooms: any;
   rooms: any;
+
+  // temporary user_id
   user_id = "5b92fae0dc9a9449b436d403";
 
   constructor(private historyService: HistoryService,
@@ -21,7 +33,10 @@ export class ContactComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   
-  // get user rooms objects
+  /**
+   * This method retirives a list of user_rooms
+   * @param user_id 
+   */
   getUserRooms(user_id: String){
     return new Promise(resolve => {
     this.historyService.getUserRooms(user_id)
@@ -33,7 +48,10 @@ export class ContactComponent implements OnInit {
   }
 
 
-  // gat all the room objects returned by user_room
+  /** 
+   * get all the room objects returned by user_room
+   * @param room_ids
+   * */
   getRooms(room_ids: Array<String>): void{
     this.historyService.getRooms(room_ids)
       .subscribe((result:any) => {
@@ -41,7 +59,10 @@ export class ContactComponent implements OnInit {
       });
   }
 
-  // Go to specific chat
+  /**
+   * This method navigates to specific chat history page
+   * @param i specific chat
+   */
   toChat(i: number){
   this.router.navigate(['chat/' + this.user_id + '/' + this.user_rooms[i].room_id],{state: { user_room: this.user_rooms[i] } });
 
@@ -50,6 +71,7 @@ export class ContactComponent implements OnInit {
 
   ngOnInit() {
 
+    // get params from url
     this.route.paramMap.subscribe(params => {
       this.user_id = params.get("user_id");
       console.log(this.user_id);

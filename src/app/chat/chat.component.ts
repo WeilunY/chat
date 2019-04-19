@@ -1,3 +1,10 @@
+/**
+ * @author Weilun Yao
+ * 
+ * Description: 
+ * This is the chat history component for the chatting app
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../history.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,21 +25,25 @@ import { SocketService } from '../socket.service';
 
 export class ChatComponent implements OnInit {
 
-  user_id: String;
+  // user_id and room_id are loaded from url, and used to retrieve chat history from database
+  user_id: String; 
   room_id: String;
 
   user_room: any;
 
+  // messages is the chat history
   messages: any;
+
+  // users is the user in the room, used to set income and outcome message
   users: any;
 
+  // used for socketIO set up
   ioConnection: any;
 
-  // update on latest message
+  // used for updating latest message and timestamp for user_room
   latest_message: String;
   last_message: String; 
 
-  container = document.getElementById("msg_container");
 
   constructor(private router: Router,
      private historyService: HistoryService, 
@@ -42,7 +53,11 @@ export class ChatComponent implements OnInit {
 
 
 
-  // get one user room
+  /**
+   * This method will use user_id and room_id to retrive one user_room from historyService with API
+   * @param user_id User's id
+   * @param room_id Room's id
+   */
   getOneUserRoom(user_id: String, room_id: String){
     return new Promise(resolve =>{
     this.historyService.getOneUserRoom(user_id, room_id)
@@ -53,7 +68,10 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  // Get messages history from server
+  /**
+   * This method retrives the message history in the room.
+   * @param room_id 
+   */
   getMessages(room_id: String){
     return new Promise(resolve => {
     this.historyService.getMessages(room_id)
@@ -64,6 +82,10 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  /**
+   * This method uses a list of user_ids to retrives a list of users
+   * @param user_ids 
+   */
   getUsers(user_ids: Array<String>){
     this.historyService.getUsers(user_ids)
       .subscribe((result:any) => {
@@ -71,6 +93,10 @@ export class ChatComponent implements OnInit {
       });
   }
 
+  /**
+   * This method retrives the user thumbnail 
+   * @param user_id 
+   */
   getThumbnail(user_id: string){
     if(this.users){
       for(let user of this.users){
@@ -81,12 +107,20 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  // post message
+  // Post Message:
+
+  // temp variable for holding message
   message: string;
+
+  /**
+   * This method will send a new message from textfield to database
+   */
   postMessage(){
     
     if(this.message){
-      console.log(this.message);
+      //console.log(this.message);
+
+      // create a sending message object
       let sendMessage: Message = {
         room_id : this.user_room.room_id,
         context: this.message,
@@ -96,12 +130,12 @@ export class ChatComponent implements OnInit {
       };
       //console.log(sendMessage);
 
+      // send this message through history service
       this.historyService.addMessage(sendMessage);
 
-      // io
+      // send it through socektIO (live update)
       this.socketService.send(sendMessage);
 
-      //this.messages.push(sendMessage);
     } else {
       alert("Need message");
     }
@@ -110,9 +144,12 @@ export class ChatComponent implements OnInit {
 
   }
 
-  // back and update user room
+  /**
+   * This method will return to the contact page with updates on last message and timestamp
+   */
   back(){
     if (this.last_message != this.latest_message){
+
       // update user room
       let new_user_room: UserRooms = {
         user_id: this.user_room.user_id,
@@ -130,10 +167,13 @@ export class ChatComponent implements OnInit {
     this.router.navigate(['contact/' + this.user_id]);
   }
 
-  // socket io
+  /**
+   * This method connect to the socketIO server
+   */
   private initIoConnection(): void {
     this.socketService.initSocket();
 
+    // send message
     this.ioConnection = this.socketService.onMessage()
       .subscribe((message: Message) => {
         this.messages.push(message);
@@ -154,13 +194,14 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 
-    // init io
+    // init socketIO
     this.initIoConnection();
 
+    //get params from url
     this.route.paramMap.subscribe(params => {
       this.user_id = params.get("user_id");
       this.room_id = params.get("room_id");
-      console.log(this.user_id + ' 11111 ' + this.room_id);
+      //console.log(this.user_id + ' 11111 ' + this.room_id);
     });
 
   
@@ -169,6 +210,7 @@ export class ChatComponent implements OnInit {
       console.log(user_room);
 
       this.getMessages(user_room['room_id']).then((messages:[]) =>{
+
         // sort messages
         messages = messages.sort((obj1, obj2) => {
           return obj1['timestamp'] > obj2['timestamp'] ? 1 : -1;
@@ -200,11 +242,8 @@ export class ChatComponent implements OnInit {
       });
     })
 
- 
 
   }
-
-  
 
 
 
