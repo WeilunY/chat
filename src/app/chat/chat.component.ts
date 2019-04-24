@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
 
   // used for updating latest message and timestamp for user_room
   latest_message: String;
-  last_message: String; 
+
 
 
   constructor(private router: Router,
@@ -128,7 +128,6 @@ export class ChatComponent implements OnInit {
         message_id: null,
         timestamp: Math.round(new Date().getTime()/1000) 
       };
-      //console.log(sendMessage);
 
       // send this message through history service
       this.historyService.addMessage(sendMessage);
@@ -148,21 +147,20 @@ export class ChatComponent implements OnInit {
    * This method will return to the contact page with updates on last message and timestamp
    */
   back(){
-    if (this.last_message != this.latest_message){
 
-      // update user room
-      let new_user_room: UserRooms = {
-        user_id: this.user_room.user_id,
-        room_id: this.user_room.room_id,
-        message: this.latest_message,
-        timestamp: Math.round(new Date().getTime()/1000),
-        title: this.user_room.title,
-        thumbnail: this.user_room.thumbnail,
-        
-      }; 
+    // update user room
+    let new_user_room: UserRooms = {
+      user_id: this.user_room.user_id,
+      room_id: this.user_room.room_id,
+      message: this.latest_message,
+      timestamp: Math.round(new Date().getTime()/1000),
+      title: this.user_room.title,
+      thumbnail: this.user_room.thumbnail,
+      
+    }; 
 
       this.historyService.updateUserRoom(new_user_room);
-    }
+    
     
     this.router.navigate(['contact/' + this.user_id]);
   }
@@ -201,13 +199,11 @@ export class ChatComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.user_id = params.get("user_id");
       this.room_id = params.get("room_id");
-      //console.log(this.user_id + ' 11111 ' + this.room_id);
     });
 
   
     // getUserRoom with user and room id
     this.getOneUserRoom(this.user_id, this.room_id).then((user_room: any) => {
-      console.log(user_room);
 
       this.getMessages(user_room['room_id']).then((messages:[]) =>{
 
@@ -218,8 +214,7 @@ export class ChatComponent implements OnInit {
   
         // last message
         if (messages.length > 1){
-          this.last_message = messages[messages.length - 1]['context'];
-          console.log(this.latest_message);
+          this.latest_message = messages[messages.length - 1]['context'];
         }
         
   

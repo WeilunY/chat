@@ -96,7 +96,7 @@ export class HistoryService {
         url += "ids[]="+user_ids[i]+"&";
       } 
     }
-    console.log(this.users_api_url +url);
+    //console.log(this.users_api_url +url);
     return this.http.get(this.users_api_url +url);
   }
 
